@@ -1,0 +1,86 @@
+---
+title: "Global Salaries"
+author: "Dharshan Lakshmikanthan"
+format: html
+execute: 
+  echo: false
+---
+
+```{r}
+#| message: FALSE
+
+library(tidyverse)
+library(brms)
+library(janitor)
+library(ggplot2)
+library(primer.data)
+library(gtsummary)
+```
+
+```{r}
+# Load and clean data
+salary_data <- read_csv('Salary_Data_Based_country_and_race.csv')
+
+# Clean column names
+salary_data <- salary_data %>%
+  clean_names()
+
+# Check for missing values and handle them
+salary_data <- salary_data %>%
+  drop_na()  # Drops rows with any NA values
+
+# Transform data for analysis
+salary_data <- salary_data %>%
+  mutate(
+    education_level = as.factor(education_level),
+    years_of_experience = as.numeric(years_of_experience)
+  )
+```
+
+
+```{r}
+#| cache: TRUE
+
+# Fit the model
+fit_salary <- brm(formula = salary ~ years_of_experience + education_level,
+    data = salary_data,
+    family = gaussian(),
+    refresh = 0,
+    silent = 2,
+    seed = 9)
+```
+
+```{r}
+# Print regression table
+tbl_regression(fit_salary)
+
+"This makes a regression table that summarizes the model fit."
+```
+
+```{r}
+# Prepare data for predictions
+ndata <- tibble(
+  years_of_experience = c(5, 10),
+  education_level = c("Bachelor's", "Master's")
+)
+
+# Generate predictions and visualize effects
+predictions <- fit_salary |>
+  add_epred_draws(newdata = ndata) |>
+  pivot_wider(id_cols = .draw, 
+              names_from = education_level,
+              values_from = .epred)
+
+# Plot predictions
+ggplot(predictions, aes(x = `Master's` - `Bachelor's`, fill = "Education Effect")) +
+  geom_histogram(bins = 100, aes(y = after_stat(count / sum(count)))) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_classic() +
+  labs(title = "Posterior Distribution of Education Effect on Salary",
+       x = "Difference in Salary",
+       y = "Probability",
+       fill = "Effect Type")
+```
+
+
+
