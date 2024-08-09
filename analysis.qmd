@@ -1,48 +1,42 @@
 ---
 title: "Global Salaries"
 author: "Dharshan Lakshmikanthan"
-format: html
 execute: 
   echo: false
 ---
 
 ```{r}
-#| message: FALSE
-
+#| label: setup
+#| message: false
 library(tidyverse)
 library(brms)
-library(janitor)
 library(ggplot2)
-library(primer.data)
 library(gtsummary)
-```
+library(tidybayes)
+library(primer.data)
 
-```{r}
 # Load and clean data
 salary_data <- read_csv('Salary_Data_Based_country_and_race.csv')
 
-# Clean column names
+# Clean column names by replacing spaces with underscores
 salary_data <- salary_data %>%
-  clean_names()
-
-# Check for missing values and handle them
-salary_data <- salary_data %>%
-  drop_na()  # Drops rows with any NA values
-
-# Transform data for analysis
-salary_data <- salary_data %>%
+  rename_with(~str_replace_all(., " ", "_")) %>%
   mutate(
-    education_level = as.factor(education_level),
-    years_of_experience = as.numeric(years_of_experience)
-  )
+    education = as.factor(Education_Level),
+    experience = as.numeric(Years_of_Experience)
+  ) %>%
+  drop_na()
+
+# Print column names to verify
+print(colnames(salary_data))
 ```
 
 
 ```{r}
-#| cache: TRUE
-
+#| cache: true
+#| warning: false
 # Fit the model
-fit_salary <- brm(formula = salary ~ years_of_experience + education_level,
+fit_salary <- brm(formula = Salary ~ experience + education,
     data = salary_data,
     family = gaussian(),
     refresh = 0,
@@ -51,36 +45,60 @@ fit_salary <- brm(formula = salary ~ years_of_experience + education_level,
 ```
 
 ```{r}
-# Print regression table
+#| label: regression_table
+#| cache: false
 tbl_regression(fit_salary)
 
-"This makes a regression table that summarizes the model fit."
+"This table summarizes the model fit for the global salary data."
 ```
 
 ```{r}
-# Prepare data for predictions
-ndata <- tibble(
-  years_of_experience = c(5, 10),
-  education_level = c("Bachelor's", "Master's")
+#| cache: true
+# Prepare new data for predictions
+ndata <- expand_grid(
+  experience = c(5, 10),
+  education = levels(salary_data$education)[1:2]  # Assuming you want the first two levels
 )
 
-# Generate predictions and visualize effects
-predictions <- fit_salary |>
-  add_epred_draws(newdata = ndata) |>
-  pivot_wider(id_cols = .draw, 
-              names_from = education_level,
-              values_from = .epred)
+# Generate posterior predictions
+posterior_samples <- posterior_predict(fit_salary, newdata = ndata)
 
+# Convert predictions to a data frame
+predictions_df <- as_tibble(posterior_samples) %>%
+  mutate(draw = row_number()) %>%
+  pivot_longer(-draw, names_to = "scenario", values_to = "prediction") %>%
+  mutate(
+    experience = rep(ndata$experience, each = nrow(posterior_samples)),
+    education = rep(ndata$education, each = nrow(posterior_samples))
+  )
+
+# Calculate mean predictions and effects
+mean_predictions <- predictions_df %>%
+  group_by(experience, education) %>%
+  summarise(mean_prediction = mean(prediction), .groups = 'drop') %>%
+  pivot_wider(names_from = education, values_from = mean_prediction) %>%
+  mutate(
+    education_effect = .[[3]] - .[[2]],
+    experience_effect = (.[[2]][experience == 10] - .[[2]][experience == 5])
+  ) %>%
+  pivot_longer(cols = c(education_effect, experience_effect),
+               names_to = "effect_type",
+               values_to = "effect")
+```
+
+```{r}
+#| cache: false
 # Plot predictions
-ggplot(predictions, aes(x = `Master's` - `Bachelor's`, fill = "Education Effect")) +
+ggplot(mean_predictions, aes(x = effect, fill = effect_type)) +
   geom_histogram(bins = 100, aes(y = after_stat(count / sum(count)))) +
   scale_y_continuous(labels = scales::percent_format()) +
   theme_classic() +
-  labs(title = "Posterior Distribution of Education Effect on Salary",
+  labs(title = "Posterior Distribution of Effects on Salary",
        x = "Difference in Salary",
        y = "Probability",
        fill = "Effect Type")
 ```
 
 
+We used global salary data to measure the causal effects of education level and years of experience on salaries across various countries and industries in 2024. We modeled Salary as a linear function of Years of Experience and Education Level. The measures of uncertainty around these causal effects are reflected in the distributions of the estimated effects, which we visualize using histograms of the effect draws to assess their variability.
 

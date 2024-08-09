@@ -1,0 +1,11 @@
+---
+title: "About"
+---
+
+My name is Dharshan Lakshmikanthan. I'm a senior and I go to Mountain House High School.
+
+Here is [my Github account](https://github.com/DharshanLak) where all my other projects are listed.
+
+This project investigates the causal effects of education level and years of experience on global salaries in 2024. Using data from various countries and industries, a linear model was fitted to analyze how these factors influence salary. The model's results are visualized through histograms showing the distributions of estimated effects, reflecting measures of uncertainty around these causal effects.Here is the [Github repository](https://github.com/DharshanLak/global-salary).
+
+This project was created as a part of [Kane's Data Science Bootcamp](https://bootcamp.davidkane.info/).

@@ -1,0 +1,85 @@
+---
+title: "Data Analysis"
+execute: 
+  echo: false
+---
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+library(brms)
+library(ggplot2)
+library(gtsummary)
+library(tidybayes)
+library(primer.data)
+
+# Load and clean data
+salary_data <- read_csv('Salary_Data_Based_country_and_race.csv')
+
+# Clean column names by replacing spaces with underscores
+salary_data <- salary_data %>%
+  rename_with(~str_replace_all(., " ", "_")) %>%
+  mutate(
+    experience = as.numeric(Years_of_Experience),
+    Salary = as.numeric(Salary)  # Ensure Salary is numeric
+  ) %>%
+  drop_na()
+
+# Print column names to verify
+print(colnames(salary_data))
+```
+
+```{r}
+#| cache: false
+#| warning: false
+# Fit the model without education
+fit_salary <- brm(formula = Salary ~ experience,
+    data = salary_data,
+    family = gaussian(),
+    refresh = 0,
+    silent = 2,
+    seed = 9)
+```
+
+```{r}
+#| label: regression_table
+#| cache: false
+tbl_regression(fit_salary)
+
+"This table summarizes the model fit for the global salary data."
+```
+
+```{r}
+# Prepare new data for predictions
+ndata <- expand_grid(
+  experience = c(5, 10)
+)
+
+# Generate posterior predictions
+posterior_samples <- posterior_predict(fit_salary, newdata = ndata)
+
+# Process predictions
+predictions_df <- as_tibble(posterior_samples) %>%
+  mutate(draw = row_number()) %>%
+  pivot_longer(-draw, names_to = "scenario", values_to = "prediction") %>%
+  mutate(
+    experience = rep(ndata$experience, each = nrow(posterior_samples))
+  )
+
+# Calculate mean predictions and effects
+mean_predictions <- predictions_df %>%
+  group_by(experience) %>%
+  summarise(mean_prediction = mean(prediction), .groups = 'drop') %>%
+  mutate(
+    experience_effect = mean_prediction[experience == 10] - mean_prediction[experience == 5]
+  ) %>%
+  pivot_longer(cols = experience_effect,
+               names_to = "effect_type",
+               values_to = "effect")
+
+# Save the data frame
+save(mean_predictions, file = "mean_predictions.rda")
+```
+
+

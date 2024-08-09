@@ -1,0 +1,13 @@
+---
+title: "Equations"
+---
+
+## Key Equation
+
+Here is an important equation related to our analysis:
+
+$$
+\text{Salary} = \beta_0 + \beta_1 \times \text{Experience}
+$$
+
+This equation models the salary as a function of experience level.

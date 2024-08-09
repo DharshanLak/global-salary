@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "Data Analysis",
+    "section": "",
+    "text": "[1] \"...1\"                \"Age\"                 \"Gender\"             \n [4] \"Education_Level\"     \"Job_Title\"           \"Years_of_Experience\"\n [7] \"Salary\"              \"Country\"             \"Race\"               \n[10] \"experience\"         \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nBeta\n95% CI\n1\n\n\n\n\nexperience\n7,048\n6,927, 7,174\n\n\n\n1\nCI = Credible Interval\n\n\n\n\n\n\n\n\n\n[1] \"This table summarizes the model fit for the global salary data.\"\n\n\n\n\nWarning: The `x` argument of `as_tibble.matrix()` must have unique column names if\n`.name_repair` is omitted as of tibble 2.0.0.\nℹ Using compatibility `.name_repair`."
+  },
+  {
+    "objectID": "analysis.html",
+    "href": "analysis.html",
+    "title": "Global Salaries",
+    "section": "",
+    "text": "[1] \"...1\"                \"Age\"                 \"Gender\"             \n [4] \"Education_Level\"     \"Job_Title\"           \"Years_of_Experience\"\n [7] \"Salary\"              \"Country\"             \"Race\"               \n[10] \"education\"           \"experience\"         \n\n\n\n\nRunning /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c\nusing C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’\nusing SDK: ‘’\nclang -arch x86_64 -I\"/Library/Frameworks/R.framework/Resources/include\" -DNDEBUG   -I\"/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/Rcpp/include/\"  -I\"/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/RcppEigen/include/\"  -I\"/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/RcppEigen/include/unsupported\"  -I\"/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/BH/include\" -I\"/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/StanHeaders/include/src/\"  -I\"/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/StanHeaders/include/\"  -I\"/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/RcppParallel/include/\"  -I\"/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/rstan/include\" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/x86_64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o\nIn file included from &lt;built-in&gt;:1:\nIn file included from /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:\nIn file included from /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/RcppEigen/include/Eigen/Dense:1:\nIn file included from /Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/RcppEigen/include/Eigen/Core:19:\n/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found\n#include &lt;cmath&gt;\n         ^~~~~~~\n1 error generated.\nmake: *** [foo.o] Error 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\nBeta\n95% CI\n1\n\n\n\n\nexperience\n5,793\n5,666, 5,919\n\n\neducation\n\n\n\n\n\n\n    Bachelor's\n—\n—\n\n\n    educationBachelorsDegree\n-38,556\n-40,634, -36,383\n\n\n    educationHighSchool\n-66,940\n-69,935, -63,880\n\n\n    educationMasters\n10,018\n6,516, 13,476\n\n\n    educationMastersDegree\n-23,565\n-25,829, -21,266\n\n\n    phD\n-13,575\n-65,031, 36,256\n\n\n    PhD\n-7,562\n-10,071, -5,027\n\n\n\n1\nCI = Credible Interval\n\n\n\n\n\n\n\n\n\n[1] \"This table summarizes the model fit for the global salary data.\"\n\n\n\n\nWarning: The `x` argument of `as_tibble.matrix()` must have unique column names if\n`.name_repair` is omitted as of tibble 2.0.0.\nℹ Using compatibility `.name_repair`.\n\n\n\n\n\n\n\n\n\n\n\nWe used global salary data to measure the causal effects of education level and years of experience on salaries across various countries and industries in 2024. We modeled Salary as a linear function of Years of Experience and Education Level. The measures of uncertainty around these causal effects are reflected in the distributions of the estimated effects, which we visualize using histograms of the effect draws to assess their variability."
+  },
+  {
+    "objectID": "sources.html",
+    "href": "sources.html",
+    "title": "Sources",
+    "section": "",
+    "text": "This project takes its data from (https://www.kaggle.com/datasets/amirmahdiabbootalebi/salary-by-job-title-and-country/data?select=Salary_Data_Based_country_and_race.csv )by Amirmahdi Aboutalebi on Kaggle."
+  },
+  {
+    "objectID": "graphic.html",
+    "href": "graphic.html",
+    "title": "Graphic",
+    "section": "",
+    "text": "New names:\nRows: 6704 Columns: 9\n── Column specification\n──────────────────────────────────────────────────────── Delimiter: \",\" chr\n(5): Gender, Education Level, Job Title, Country, Race dbl (4): ...1, Age,\nYears of Experience, Salary\nℹ Use `spec()` to retrieve the full column specification for this data. ℹ\nSpecify the column types or set `show_col_types = FALSE` to quiet this message.\n• `` -&gt; `...1`\n\n\n\n\n\n\n\n\n\n\n\nReading layer `nc' from data source \n  `/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/sf/shape/nc.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 100 features and 14 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965\nGeodetic CRS:  NAD27"
+  },
+  {
+    "objectID": "graphic.html#bar-graph",
+    "href": "graphic.html#bar-graph",
+    "title": "Graphic",
+    "section": "",
+    "text": "New names:\nRows: 6704 Columns: 9\n── Column specification\n──────────────────────────────────────────────────────── Delimiter: \",\" chr\n(5): Gender, Education Level, Job Title, Country, Race dbl (4): ...1, Age,\nYears of Experience, Salary\nℹ Use `spec()` to retrieve the full column specification for this data. ℹ\nSpecify the column types or set `show_col_types = FALSE` to quiet this message.\n• `` -&gt; `...1`\n\n\n\n\n\n\n\n\n\n\n\nReading layer `nc' from data source \n  `/Library/Frameworks/R.framework/Versions/4.4-x86_64/Resources/library/sf/shape/nc.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 100 features and 14 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965\nGeodetic CRS:  NAD27"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Global Salaries",
+    "section": "",
+    "text": "What is this project about?\nThis website presents a detailed analysis of global salaries based on education level and years of experience. Explore the following sections:\n\nData Analysis\nGraphics\nEquations"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "My name is Dharshan Lakshmikanthan. I’m a senior and I go to Mountain House High School.\nHere is my Github account where all my other projects are listed.\nThis project investigates the causal effects of education level and years of experience on global salaries in 2024. Using data from various countries and industries, a linear model was fitted to analyze how these factors influence salary. The model’s results are visualized through histograms showing the distributions of estimated effects, reflecting measures of uncertainty around these causal effects.Here is the Github repository.\nThis project was created as a part of Kane’s Data Science Bootcamp."
+  },
+  {
+    "objectID": "equations.html",
+    "href": "equations.html",
+    "title": "Equations",
+    "section": "",
+    "text": "Here is an important equation related to our analysis:\n\\[\n\\text{Salary} = \\beta_0 + \\beta_1 \\times \\text{Experience}\n\\]\nThis equation models the salary as a function of experience level."
+  },
+  {
+    "objectID": "equations.html#key-equation",
+    "href": "equations.html#key-equation",
+    "title": "Equations",
+    "section": "",
+    "text": "Here is an important equation related to our analysis:\n\\[\n\\text{Salary} = \\beta_0 + \\beta_1 \\times \\text{Experience}\n\\]\nThis equation models the salary as a function of experience level."
+  }
+]

@@ -1,0 +1,14 @@
+---
+title: "Global Salaries"
+author: "Dharshan Lakshmikanthan"
+execute: 
+  echo: false
+---
+
+# What is this project about?
+
+This website presents a detailed analysis of global salaries based on education level and years of experience. Explore the following sections:
+
+- [Data Analysis](data-analysis.qmd)
+- [Graphics](graphics.qmd)
+- [Equations](equations.qmd)

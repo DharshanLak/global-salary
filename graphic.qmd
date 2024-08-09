@@ -1,0 +1,83 @@
+---
+title: "Graphic"
+execute: 
+  echo: false
+---
+
+## Bar Graph
+
+```{r}
+#| label: bar_graph
+#| message: false
+
+# Load required libraries
+library(ggplot2)
+
+# Load the saved predictions data
+load("mean_predictions.rda")
+
+# Plot predictions
+ggplot(mean_predictions, aes(x = effect, fill = effect_type)) +
+  geom_histogram(bins = 100, aes(y = after_stat(count / sum(count)))) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  theme_classic() +
+  labs(title = "Posterior Distribution of Effects on Salary",
+       x = "Difference in Salary",
+       y = "Probability",
+       fill = "Effect Type")
+```
+
+```{r}
+#| label: line_graph
+#| cache: true
+
+# Load required libraries
+library(ggplot2)
+library(dplyr)    # For %>% pipe operator
+library(readr)    # For read_csv
+library(stringr)  # For str_replace_all
+library(tidyr)    # For drop_na
+
+# Load the salary data
+salary_data <- read_csv('Salary_Data_Based_country_and_race.csv')
+
+# Clean and prepare the data
+salary_data <- salary_data %>%
+  rename_with(~str_replace_all(., " ", "_")) %>%
+  mutate(
+    education = as.factor(Education_Level),
+    experience = as.numeric(Years_of_Experience)
+  ) %>%
+  drop_na()  # Remove rows with NA values
+
+# Sample line graph
+ggplot(salary_data, aes(x = experience, y = Salary, color = education)) +
+  geom_line() +
+  theme_minimal() +
+  labs(title = "Salary vs. Experience by Education Level",
+       x = "Years of Experience",
+       y = "Salary",
+       color = "Education Level")
+
+```
+
+```{r}
+#| label: map
+#| cache: true
+
+# Load required libraries
+library(sf)
+library(ggplot2)
+
+# Load geographical data
+world_map <- st_read(system.file("shape/nc.shp", package = "sf"))
+
+# Plot map with color based on a variable
+ggplot(data = world_map) +
+  geom_sf(aes(fill = NAME)) +  # Replace NAME with the variable you want to color by
+  scale_fill_viridis_d() +    # Use viridis color scale for discrete variables
+  theme_minimal() +
+  labs(title = "Global Map",
+       fill = "Region")
+```
+

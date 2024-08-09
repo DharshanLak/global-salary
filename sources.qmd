@@ -1,0 +1,5 @@
+---
+title: "Sources"
+---
+
+This project takes its data from (https://www.kaggle.com/datasets/amirmahdiabbootalebi/salary-by-job-title-and-country/data?select=Salary_Data_Based_country_and_race.csv )by [Amirmahdi Aboutalebi](https://www.kaggle.com/amirmahdiabbootalebi) on Kaggle.
